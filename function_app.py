@@ -53,11 +53,14 @@ def fruteirafuncion4(req: func.HttpRequest) -> func.HttpResponse:
 
         image = Image.open(BytesIO(image_data))
 
+
         predictions = process_image(image_data, ENDPOINT, PREDICTION_KEY, PROJECT_ID, ITERATION_NAME)
         processed_image = draw_bounding_boxes(image, predictions)
 
+        # Salvar a imagem processada no buffer de bytes
         img_byte_arr = BytesIO()
-        processed_image.save(img_byte_arr, format='JPEG')
+        processed_image.save(img_byte_arr, format='PNG')  # Salvar como PNG
+        
         # Converter o buffer de bytes para Base64 para suportar pelo PowerApps
         img_byte_arr = img_byte_arr.getvalue()
         img_base64 = base64.b64encode(img_byte_arr).decode('utf-8')
